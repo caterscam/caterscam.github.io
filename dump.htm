@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caterscam - Domain Duplicate Remover</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-900 text-white">
+    <header class="text-center py-4 bg-gray-800 shadow-md">
+        <h1 class="text-3xl font-bold text-red-500" style="font-family: 'Bungee Tint', cursive;">
+            Caterscam - Domain Deduper Tools
+        </h1>
+    </header>
+
+    <main class="flex-1 flex flex-col md:flex-row gap-4 p-4 overflow-hidden">
+        <!-- Input Section -->
+        <div class="flex-1 flex flex-col">
+            <label for="domainInput" 
+                class="text-red-400 uppercase mb-2 text-sm"
+                style="font-family: 'Bungee Tint', cursive;">
+                Input Domain List:
+            </label>
+            <textarea id="domainInput"
+                class="flex-1 p-3 border border-gray-700 bg-gray-800 text-white rounded resize-none"
+                placeholder="Masukkan list domain di sini, contoh:
+https://google.com/yandex
+http://google.com/bing
+www.google.com/test
+..."></textarea>
+        </div>
+
+        <!-- Output Section -->
+        <div class="flex-1 flex flex-col">
+            <label for="resultOutput" 
+                class="text-red-400 uppercase mb-2 text-sm"
+                style="font-family: 'Bungee Tint', cursive;">
+                Result (Unique Domains):
+            </label>
+            <textarea id="resultOutput" 
+                class="flex-1 p-3 border border-gray-700 bg-gray-800 text-white rounded resize-none"
+                placeholder="Hasil unik akan muncul di sini..." readonly></textarea>
+        </div>
+    </main>
+
+    <footer class="p-4 bg-gray-800 text-center">
+        <button id="processButton" 
+            class="bg-blue-600 hover:bg-blue-500 px-6 py-2 rounded text-white font-semibold shadow-md">
+            Remove Duplicates
+        </button>
+    </footer>
+
+    <script>
+        // Normalisasi domain (anggap http, https, dan www sama)
+        function normalizeDomain(url) {
+            try {
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'http://' + url;
+                }
+                const parsed = new URL(url.trim());
+                let hostname = parsed.hostname.toLowerCase();
+                if (hostname.startsWith('www.')) hostname = hostname.substring(4);
+                const path = parsed.pathname.replace(/\/+$/, '');
+                return hostname + path;
+            } catch {
+                return null;
+            }
+        }
+
+        document.getElementById('processButton').addEventListener('click', () => {
+            const inputText = document.getElementById('domainInput').value;
+            const lines = inputText.split('\n').map(x => x.trim()).filter(Boolean);
+
+            const seen = new Set();
+            const result = [];
+
+            for (const line of lines) {
+                const normalized = normalizeDomain(line);
+                if (normalized && !seen.has(normalized)) {
+                    seen.add(normalized);
+                    result.push(line);
+                }
+            }
+
+            document.getElementById('resultOutput').value = result.join('\n');
+        });
+
+        // Auto resize textareas sesuai tinggi layar
+        function resizeTextareas() {
+            const height = window.innerHeight - 180; // sisakan header/footer
+            document.getElementById('domainInput').style.height = height + 'px';
+            document.getElementById('resultOutput').style.height = height + 'px';
+        }
+
+        window.addEventListener('resize', resizeTextareas);
+        window.addEventListener('load', resizeTextareas);
+    </script>
+</body>
+</html>
