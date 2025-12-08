@@ -15,3 +15,12 @@ sudo mount -t drvfs D: /mnt/d
 npm i chrome-lens-ocr && npm i playwright && npm i axios && npx playwright install
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE IF NOT EXISTS domains (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
