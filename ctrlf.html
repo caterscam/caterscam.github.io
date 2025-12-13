@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Url From CTRL+F - Find All Opened Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+    <div class="bg-gray-800 w-full max-w-5xl p-6 rounded-xl shadow-lg">
+        
+        <h1 class="text-center text-2xl text-red-500 mb-6"
+            style="font-family: 'Bungee Tint', cursive;">
+            Get Url From CTRL+F – Find All Opened Document
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- LEFT INPUT -->
+            <div>
+                <label class="block text-red-400 text-xs uppercase mb-1"
+                       style="font-family: 'Bungee Tint', cursive;">
+                    CTRL+F Result / Raw Text
+                </label>
+                <textarea id="inputText" rows="18"
+                    class="w-full p-3 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none"
+                    placeholder="Paste hasil CTRL+F / Find in Files di sini..."></textarea>
+            </div>
+
+            <!-- RIGHT OUTPUT -->
+            <div>
+                <label class="block text-red-400 text-xs uppercase mb-1"
+                       style="font-family: 'Bungee Tint', cursive;">
+                    Extracted URLs
+                </label>
+                <textarea id="outputText" rows="18"
+                    class="w-full p-3 bg-gray-700 text-green-400 border border-gray-600 rounded focus:outline-none"
+                    readonly
+                    placeholder="Hasil URL akan muncul di sini..."></textarea>
+            </div>
+        </div>
+
+        <div class="flex gap-3 mt-4">
+            <button id="extractBtn"
+                class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 rounded">
+                Extract URL
+            </button>
+
+            <button id="clearBtn"
+                class="bg-red-600 hover:bg-red-500 text-white font-semibold px-4 rounded">
+                Clear
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("extractBtn").addEventListener("click", () => {
+            const input = document.getElementById("inputText").value;
+
+            // Regex untuk ambil semua URL http/https
+            const urlRegex = /https?:\/\/[^\s'"<>]+/gi;
+            const matches = input.match(urlRegex) || [];
+
+            // Remove duplicate
+            const uniqueUrls = [...new Set(matches)];
+
+            document.getElementById("outputText").value = uniqueUrls.join("\n");
+        });
+
+        document.getElementById("clearBtn").addEventListener("click", () => {
+            document.getElementById("inputText").value = "";
+            document.getElementById("outputText").value = "";
+        });
+    </script>
+
+</body>
+</html>
