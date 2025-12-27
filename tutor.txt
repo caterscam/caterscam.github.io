@@ -7,7 +7,7 @@ sudo mount -t drvfs D: /mnt/d
 "C:\Program Files\Python310\python.exe"
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-"C:\Program Files\Python310\python.exe" -m PyInstaller split_domain_list.py
+"C:\Program Files\Python310\python.exe" -m PyInstaller --onefile file.py
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
