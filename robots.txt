@@ -1,0 +1,7 @@
+# robots.txt for https://caterscam.github.io/
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://caterscam.github.io/sitemap.xml
